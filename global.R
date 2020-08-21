@@ -27,3 +27,5 @@ load_data <- function(){
 
     return(uk)
 }
+
+uk <- load_data()
