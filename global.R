@@ -3,6 +3,7 @@ library(data.table)
 library(snakecase)
 library(ggplot2)
 library(DT)
+library(curl)
 
 ma <- function(x, n = 7){
     stats::filter(x, rep(1 / n, n), sides = 2)
