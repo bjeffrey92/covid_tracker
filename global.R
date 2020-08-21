@@ -1,6 +1,6 @@
 library(data.table)
 library(snakecase)
-
+library(ggplot2)
 
 ma <- function(x, n = 7){
     stats::filter(x, rep(1 / n, n), sides = 2)
@@ -27,5 +27,17 @@ load_data <- function(){
 
     return(uk)
 }
+
+
+build_plot <- function(uk){
+    ggplot(data = uk) + 
+        geom_line(aes(date, average_cases_per_test), na.rm = TRUE,
+                col = '#2489CF', lwd = 1) +
+        geom_point(aes(date, cases_per_test), na.rm = TRUE) + 
+        theme_minimal() + 
+        xlab('Date') + 
+        ylab('Cases per Test') 
+}
+
 
 uk <- load_data()
