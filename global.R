@@ -1,3 +1,4 @@
+library(shiny)
 library(data.table)
 library(snakecase)
 library(ggplot2)
@@ -26,17 +27,9 @@ load_data <- function(){
     uk$average_tests <- ma(uk$new_tests_by_publish_date)
     uk$rolling_average_cases_per_test <- uk$average_cases/uk$average_tests
 
-    uk <- uk[,c('date', 
-                'new_cases_by_publish_date',
-                'new_tests_by_publish_date',
-                'cases_per_test',
-                'rolling_average_cases_per_test')]
-
-    names(uk) <- c('date', 
-                'cases',
-                'tests',
-                'cases_per_test',
-                'rolling_average_cases_per_test')
+    uk$cases_per_test <- round(uk$cases_per_test, 4)
+    uk$rolling_average_cases_per_test <- 
+        round(uk$rolling_average_cases_per_test, 4)
 
     return(uk)
 }
@@ -53,3 +46,24 @@ build_plot <- function(uk){
         theme(text = element_text(size=20))
 }
 
+
+format_for_table <- function(uk){
+    uk <- uk[,c('date', 
+                'new_cases_by_publish_date',
+                'new_tests_by_publish_date',
+                'cases_per_test',
+                'rolling_average_cases_per_test')]
+
+    names(uk) <- c('date', 
+                'cases',
+                'tests',
+                'cases_per_test',
+                'rolling_average_cases_per_test')
+
+    names(uk) <- snakecase::to_title_case(names(uk))
+
+    return(uk)
+}
+
+uk <- load_data()
+uk_f <- format_for_table(uk)
