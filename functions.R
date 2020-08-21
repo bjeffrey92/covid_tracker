@@ -27,18 +27,3 @@ load_data <- function(){
 
     return(uk)
 }
-
-
-uk <- load_data()
-plot(x = uk$date, 
-     y = uk$average_cases_per_test, 
-     type = 'l', 
-     xlab = 'Date', 
-     ylab = 'Cases per test')
-
-recent_uk <- tail(uk, n = 100)
-plot(x = recent_uk$date, 
-     y = recent_uk$average_cases_per_test, 
-     type = 'l', 
-     xlab = 'Date', 
-     ylab = 'Cases per test')
