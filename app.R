@@ -17,8 +17,6 @@ ui <- fluidPage(
         ),
 
         mainPanel(
-            textOutput(outputId = "foo"),
-            textOutput(outputId = "bar"),
             textOutput(outputId = "description"),
             plotOutput(outputId = "uk_plot"),
             dataTableOutput("tbl"),
