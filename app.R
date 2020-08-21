@@ -18,6 +18,7 @@ ui <- fluidPage(
 
         mainPanel(
             textOutput(outputId = "description"),
+            textOutput(outputId = "reference"),
             plotOutput(outputId = "uk_plot"),
             dataTableOutput("tbl"),
         )
@@ -41,10 +42,13 @@ server <- function(input, output) {
             options = list(lengthChange = FALSE))
 
     output$description <- reactive({
-        sprintf('Showing actual daily cases per test, and the 7-day rolling average, between %s and %s.',
+        sprintf("Showing actual daily cases per test, and the 7-day rolling average, between %s and %s.",
             input$date[1],
             input$date[2])
     })
+    
+    output$reference <- renderText(
+                        "Data imported from https://coronavirus.data.gov.uk/.")
 
 }
 
