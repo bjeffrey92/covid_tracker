@@ -9,11 +9,12 @@ ui <- fluidPage(
         sidebarPanel(
             dateRangeInput(inputId = 'date',
                         label = 'Date Range',
-                        start = as.Date("2020-04-01"),
+                        start = max(uk$date) - 42,
                         end = max(uk$date),
                         min = min(uk$date),
                         max = max(uk$date)
-            )
+            ),
+            span(textOutput(outputId = "warning"), style="color:red")
         ),
 
         mainPanel(
@@ -26,9 +27,6 @@ ui <- fluidPage(
 )
 
 server <- function(input, output) {
-    
-    uk <- load_data()
-    uk_f <- format_for_table(uk)
 
     output$uk_plot <- renderPlot({
         uk <- uk[uk$date >= as.Date(input$date[1]) & 
@@ -36,7 +34,6 @@ server <- function(input, output) {
         build_plot(uk)
     })
 
-    # names(uk) <- snakecase::to_title_case(names(uk))
     output$tbl <- renderDT(
             uk_f[uk_f$Date >= input$date[1] & uk_f$Date <= input$date[2],], 
             options = list(lengthChange = FALSE))
@@ -48,8 +45,12 @@ server <- function(input, output) {
     })
     
     output$reference <- renderText(
-                        "Data imported from https://coronavirus.data.gov.uk/.")
+        "Data imported from https://coronavirus.data.gov.uk/."
+    )
 
+    output$warning <- renderText(
+        'WARNING: Coronavirus infection testing practices have changed over time in the UK. Therefore caution showed be exercised when analysing the trend in percent test positivity over long periods of time'
+    )
 }
 
 shinyApp(ui = ui, server = server)
